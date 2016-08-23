@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!-- TODO 修改name -->
+<project name="json-formatter" default="main">
+	
+	<!-- main函数对应的类名 -->
+	<!-- TODO 修改value -->
+	<property name="main-class" value="com.simplemain.kit.json.Main" />
+		
+	<!-- TODO 修改value -->
+	<property name="project.version" value="1.0.0" />
+	
+	<property name="src.dir" value="${basedir}/java" />
+	<property name="classes.dir" value="${basedir}/bin" />
+	<property name="jar.dir" value="${basedir}/jar" />
+	<property name="jar.path" value="${jar.dir}/${ant.project.name}-${project.version}.jar" />
+
+	<path id="srcpath">
+		<fileset dir="${src.dir}" />
+	</path>
+
+	<!-- 主target -->
+	<target name="main" depends="init,clean,compile,jar" description="Main target">
+		<echo>build done!</echo>
+	</target>
+
+	<!-- 清理环境 -->
+	<target name="clean">
+		<echo>clean</echo>
+		<delete includeEmptyDirs="true" quiet="true">
+			<fileset dir="${classes.dir}" />
+			<fileset dir="${jar.dir}" />
+		</delete>
+	</target>
+
+	<!-- 初始化环境 -->
+	<target name="init" depends="clean">
+	</target>
+
+	<!-- 编译 -->
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac destdir="${classes.dir}"
+			target="1.8" includeantruntime="true" debug="on" encoding="utf-8">
+    		<src path="${src.dir}" />
+		</javac>
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java"/>
+		</copy>
+	</target>
+
+	<!-- 打jar包 -->
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.path}" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+	</target>
+</project>

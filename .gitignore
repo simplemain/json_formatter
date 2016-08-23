@@ -1,0 +1,8 @@
+/bin
+/.settings
+/.project
+/.classpath
+/logs
+/jar
+/.DS_Store
+/data
