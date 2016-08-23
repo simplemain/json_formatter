@@ -6,6 +6,9 @@ import com.simplemain.kit.json.element.JsonObject;
 import com.simplemain.kit.json.element.JsonString;
 import com.simplemain.kit.json.error.SyntaxError;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class ObjectParser implements ElementParser
 {
 	@Override

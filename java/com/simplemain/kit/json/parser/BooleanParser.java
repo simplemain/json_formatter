@@ -3,6 +3,9 @@ package com.simplemain.kit.json.parser;
 import com.simplemain.kit.json.element.JsonBoolean;
 import com.simplemain.kit.json.element.JsonElement;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class BooleanParser implements ElementParser
 {
 	private static final String TRUE  = "true";

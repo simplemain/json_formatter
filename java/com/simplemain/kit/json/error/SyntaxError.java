@@ -1,5 +1,8 @@
 package com.simplemain.kit.json.error;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class SyntaxError extends SyntaxException
 {
 	private static final long serialVersionUID = -4674194378872598782L;

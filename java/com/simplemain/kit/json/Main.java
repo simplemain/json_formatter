@@ -6,6 +6,9 @@ import com.simplemain.kit.json.element.JsonElement;
 import com.simplemain.kit.json.format.TextJsonFormatter;
 import com.simplemain.kit.json.parser.JsonParser;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class Main
 {
 	public static void main(String[] args)

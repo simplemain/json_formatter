@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.simplemain.kit.json.error.SyntaxException;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class Token
 {
 	private static int idx = 0;

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class JsonArray extends JsonElement
 {
 	public static final char BEGIN_SYMBOL   = '[';

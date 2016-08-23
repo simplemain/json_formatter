@@ -2,6 +2,9 @@ package com.simplemain.kit.json.element;
 
 import java.util.Iterator;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class JsonNull extends JsonElement
 {
 	public String toString()

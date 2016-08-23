@@ -10,6 +10,9 @@ import com.simplemain.kit.json.element.JsonElement;
 import com.simplemain.kit.json.element.Token;
 import com.simplemain.kit.json.error.SyntaxException;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class TextJsonFormatter implements JsonFormatter
 {
 	private static final String TAB   = "    ";

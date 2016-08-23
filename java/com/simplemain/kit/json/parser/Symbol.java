@@ -2,6 +2,9 @@ package com.simplemain.kit.json.parser;
 
 import java.nio.CharBuffer;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class Symbol
 {
 	private static final int NEAR_BY_MAX_LEN = 10;

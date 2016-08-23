@@ -5,6 +5,9 @@ import com.simplemain.kit.json.element.JsonElement;
 import com.simplemain.kit.json.element.JsonNumber;
 import com.simplemain.kit.json.error.SyntaxError;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class NumberParser implements ElementParser
 {
 

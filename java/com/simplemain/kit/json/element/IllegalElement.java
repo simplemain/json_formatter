@@ -4,6 +4,9 @@ import java.util.Iterator;
 
 import com.simplemain.kit.json.error.SyntaxException;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class IllegalElement extends JsonElement
 {
 	private String string;

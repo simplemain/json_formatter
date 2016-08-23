@@ -4,6 +4,9 @@ import com.simplemain.kit.json.element.JsonString;
 import com.simplemain.kit.json.error.SyntaxError;
 import com.simplemain.kit.json.error.SyntaxWarning;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class StringParser implements ElementParser
 {
 	@Override

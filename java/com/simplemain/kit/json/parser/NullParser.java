@@ -3,6 +3,9 @@ package com.simplemain.kit.json.parser;
 import com.simplemain.kit.json.element.JsonElement;
 import com.simplemain.kit.json.element.JsonNull;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class NullParser implements ElementParser
 {
 	private static final String NULL  = "null";

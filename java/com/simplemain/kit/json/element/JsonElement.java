@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.simplemain.kit.json.error.SyntaxException;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public abstract class JsonElement implements Iterable<Token>
 {
 	protected int level;

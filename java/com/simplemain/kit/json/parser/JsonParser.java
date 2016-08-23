@@ -5,6 +5,9 @@ import com.simplemain.kit.json.element.JsonElement;
 import com.simplemain.kit.json.element.Token;
 import com.simplemain.kit.json.error.SyntaxError;
 
+/**
+ * @author zgwangbo@simplemain.com
+ */
 public class JsonParser
 {
 	private static final ElementParser[] PARSERS = {new ObjectParser(), new ArrayParser()};
