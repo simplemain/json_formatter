@@ -10,7 +10,6 @@ import com.simplemain.kit.json.error.SyntaxError;
  */
 public class NumberParser implements ElementParser
 {
-
 	@Override
 	public JsonElement parse(Symbol symbol)
 	{

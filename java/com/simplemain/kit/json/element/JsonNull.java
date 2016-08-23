@@ -7,9 +7,11 @@ import java.util.Iterator;
  */
 public class JsonNull extends JsonElement
 {
+	public static final String NULL = "null";
+	
 	public String toString()
 	{
-		return "null";
+		return NULL;
 	}
 	
 	@Override

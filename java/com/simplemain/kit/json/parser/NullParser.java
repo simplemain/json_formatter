@@ -8,22 +8,20 @@ import com.simplemain.kit.json.element.JsonNull;
  */
 public class NullParser implements ElementParser
 {
-	private static final String NULL  = "null";
-	
 	@Override
 	public JsonElement parse(Symbol symbol)
 	{
 		symbol.mark();
 		
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < NULL.length() && symbol.hasNext(); i++)
+		for (int i = 0; i < JsonNull.NULL.length() && symbol.hasNext(); i++)
 		{
 			char ch = i == 0 ? symbol.nextWithoutSpace() : symbol.next();
 			sb.append(ch);
 		}
 		
 		String s = sb.toString();
-		if (NULL.compareToIgnoreCase(s) == 0)
+		if (JsonNull.NULL.compareToIgnoreCase(s) == 0)
 		{
 			return new JsonNull();
 		}

@@ -8,31 +8,28 @@ import com.simplemain.kit.json.element.JsonElement;
  */
 public class BooleanParser implements ElementParser
 {
-	private static final String TRUE  = "true";
-	private static final String FALSE = "false";
-	
 	@Override
 	public JsonElement parse(Symbol symbol)
 	{
 		symbol.mark();
 		
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < TRUE.length() && symbol.hasNext(); i++)
+		for (int i = 0; i < JsonBoolean.TRUE.length() && symbol.hasNext(); i++)
 		{
 			char ch = i == 0 ? symbol.nextWithoutSpace() : symbol.next();
 			sb.append(ch);
 		}
 		String s = sb.toString();
-		if (TRUE.compareToIgnoreCase(s) == 0)
+		if (JsonBoolean.TRUE.compareToIgnoreCase(s) == 0)
 		{
-			return JsonBoolean.TRUE;
+			return JsonBoolean.createTrue();
 		}
 		
 		sb.append(symbol.next());
 		s = sb.toString();
-		if (FALSE.compareToIgnoreCase(s) == 0)
+		if (JsonBoolean.FALSE.compareToIgnoreCase(s) == 0)
 		{
-			return JsonBoolean.FALSE;
+			return JsonBoolean.createFalse();
 		}
 		
 		symbol.reset();

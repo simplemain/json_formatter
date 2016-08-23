@@ -7,10 +7,20 @@ import java.util.Iterator;
  */
 public class JsonBoolean extends JsonElement
 {
-	public static final JsonBoolean TRUE  = new JsonBoolean("true");
-	public static final JsonBoolean FALSE = new JsonBoolean("false");
+	public static final String TRUE  = "true";
+	public static final String FALSE = "false";
 	
 	private final String string;
+	
+	public static JsonBoolean createTrue()
+	{
+		return new JsonBoolean("true");
+	}
+	
+	public static JsonBoolean createFalse()
+	{
+		return new JsonBoolean("false");
+	}
 	
 	private JsonBoolean(String s)
 	{

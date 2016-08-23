@@ -89,8 +89,7 @@ public class StringParser implements ElementParser
 			{
 				sb.append(next);
 			}
-		}
-		
+		}	
 		
 		ret.setString(sb.toString());
 		SyntaxError error = new SyntaxError(symbol.getLineNo(), symbol.getRowNo(), 
