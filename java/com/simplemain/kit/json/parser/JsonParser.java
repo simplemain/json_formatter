@@ -31,6 +31,16 @@ public class JsonParser
 			final JsonElement je = parser.parse(symbol);
 			if (je != null)
 			{
+				symbol.mark();
+				if (symbol.nextWithoutSpace() != 0) // 结束符后不应该再出现内容
+				{
+					symbol.reset();
+					SyntaxError error = new SyntaxError(symbol.getLineNo(), symbol.getRowNo(), 
+							symbol.getRemaining(), "unexpected characters!");
+					
+					je.addException(error);
+				}
+				
 				if (throwsExceptions)
 				{
 					for (Token token : je)

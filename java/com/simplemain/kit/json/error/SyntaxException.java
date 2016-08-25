@@ -44,4 +44,9 @@ public abstract class SyntaxException extends RuntimeException
 		return String.format("syntax %s at [%d:%d] near [%s] caused by [%s]", 
 				type, lineNo, rowNo, nearByString, super.getMessage());
 	}
+
+	public String getNearByString()
+	{
+		return nearByString;
+	}
 }

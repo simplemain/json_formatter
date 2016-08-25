@@ -14,18 +14,18 @@ public class StringParser implements ElementParser
 	{
 		final JsonString ret = new JsonString();
 		
-		char next = 0;
+		char ch = 0;
 
 		symbol.mark();
 		
-		next = symbol.nextWithoutSpace();
+		ch = symbol.nextWithoutSpace();
 		
 		char END = JsonString.SIGN;
-		if (JsonString.SIGN == next)
+		if (JsonString.SIGN == ch)
 		{
 			
 		}
-		else if (JsonString.POSSIBLE_SIGN == next)
+		else if (JsonString.POSSIBLE_SIGN == ch)
 		{
 			SyntaxWarning warn = new SyntaxWarning(symbol.getLineNo(), symbol.getRowNo(), 
 					symbol.getNearByChars(), "in STRING, \"'\" is NOT permitted");
@@ -45,34 +45,46 @@ public class StringParser implements ElementParser
 		StringBuffer sb = new StringBuffer();
 		while (symbol.hasNext())
 		{
-			next = symbol.next();
-			if (END == next)
+			ch = symbol.next();
+			if (END == ch)
 			{
 				ret.setString(sb.toString());
 				ret.fillEndSymbol();
 				return ret;
 			}
-			else if ('\\' == next)
+			else if ('\\' == ch)
 			{
 				// check : " \ / b f n r t uxxxx
-				sb.append(next);
-				next = symbol.next();
+//				sb.append(next);
+				char next = symbol.next();
+				
+				if (next != 'u')
+				{
+					sb.append(ch);
+					sb.append(next);
+				}
+				
 				if (next == '"' || next == '\\' || next == 'b' || next == 'f' || 
 						next == 'n' || next == 'r' || next == 't')
 				{
-					sb.append(next);
+					// permit
 				}
 				else if (next == 'u')
 				{
-					sb.append(next);
+					int num = 0;
+					boolean hasError = false;
+					String tmp = "" + ch + next;
 					for (int i = 0; i < 4; i++)
 					{
 						next = symbol.next();
 						next = Character.toLowerCase(next);
+						tmp += next;
+						
 						if (next >= '0' && next <= '9' ||
 								next >= 'a' && next <= 'f')
 						{
-							sb.append(next);
+							num *= 16;
+							num += Integer.valueOf("" + next, 16);
 						}
 						else // error
 						{
@@ -80,14 +92,31 @@ public class StringParser implements ElementParser
 									symbol.getNearByChars(), "in STRING, only [0-9a-fA-F] are permitted after \\u");
 							
 							ret.addException(warn);
-//							return null;
+							hasError = true;
 						}
 					}
+					
+					if (!hasError)
+					{
+						char c = (char)num;
+						sb.append(c);
+					}
+					else
+					{
+						sb.append(tmp);
+					}
+				}
+				else
+				{
+					SyntaxWarning warn = new SyntaxWarning(symbol.getLineNo(), symbol.getRowNo(), 
+							symbol.getNearByChars(), "in STRING, only [\\/bfnrtu] are permitted after \\");
+					
+					ret.addException(warn);
 				}
 			}
 			else
 			{
-				sb.append(next);
+				sb.append(ch);
 			}
 		}	
 		

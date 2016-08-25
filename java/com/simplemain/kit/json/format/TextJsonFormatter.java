@@ -1,30 +1,20 @@
 package com.simplemain.kit.json.format;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.simplemain.kit.json.element.JsonElement;
 import com.simplemain.kit.json.element.Token;
 import com.simplemain.kit.json.error.SyntaxException;
+import com.simplemain.kit.json.format.MetaFormatter.Line;
 
-/**
- * @author zgwangbo@simplemain.com
- */
 public class TextJsonFormatter implements JsonFormatter
 {
 	private static final String TAB   = "    ";
 	
-	private boolean withLineNo      = false;
-	private boolean withErrorInline = false;
-	private boolean withErrorDetail = false;
-	
-	private int lineNoWidth = 0;
-	private int lineNo = 0;
-	
-	private Set<Integer> lineHasError = new HashSet<>();
+	private boolean withLineNo      = false; // 是否输出行号
+	private boolean withErrorInline = false; // 是否在行内输出错误指示
+	private boolean withErrorDetail = false; // 是否输出详细错误信息
 	
 	public TextJsonFormatter()
 	{
@@ -38,152 +28,88 @@ public class TextJsonFormatter implements JsonFormatter
 		this.withErrorDetail = withErrorDetail;
 	}
 	
+	@Override
 	public void format(JsonElement element, PrintWriter pw)
 	{
-		if (element == null || pw == null)
-		{
-			return;
-		}
+		final MetaFormatter format = new MetaFormatter();
+		format.format(element, pw);
 		
-		try
-		{
-			// 如果要打印行号或者是指出错误位置，需要先预打印一遍，以确定
-			// 1、行号的宽度
-			// 2、错误所在的行
-			if (withLineNo || withErrorInline)
-			{
-				doFormat(element, null, null);
-				for (lineNoWidth = 0; lineNo > 0; lineNo /= 10)
-				{
-					lineNoWidth++;
-				}
-			}
-			
-			// 正式打印
-			List<SyntaxException> exs = withErrorDetail ? new ArrayList<SyntaxException>() : null;
-			doFormat(element, pw, exs);
-			
-			println(pw, "");
-			println(pw, "");
-			
-			// 打印完整错误信息
-			if (withErrorDetail && !exs.isEmpty())
-			{
-				pw.println("==== syntax warnings & errors ====");
-				for (SyntaxException e : exs)
-				{
-					println(pw, e.toString());
-				}
-			}
-		}
-		finally
-		{
-			pw.flush();
-		}
-	}
-	
-	private void doFormat(JsonElement element, PrintWriter pw, List<SyntaxException> exs)
-	{
-		lineNo = 0;
-		newLine(pw);
+		final List<Line> lines = format.getLines();
+		final List<SyntaxException> exceptions = format.getExceptions();
 		
-		int lastLevel = 0;
+		final int lineNoWidth = getLineNoWidth(lines.size());
+		int lineNo = 0;
 		
-		for (Token token : element)
+		for (Line line : lines)
 		{
-			int level = token.getLevel();
+			lineNo++;
 			
-			if (level != lastLevel)
+			// 打印行号
+			if (withLineNo)
 			{
-				newLine(pw);
-				lastLevel = level;
-				
-				for (int i = 0; i < level; i++)
+				if (lineNoWidth > 0)
 				{
-					print(pw, TAB);
-				}
-				print(pw, token.getValue());
-			}
-			else if (token.getType() == Token.TYPE_SEG_SEPARATOR)
-			{
-				print(pw, token.getValue());
-				newLine(pw);
-				for (int i = 0; i < level; i++)
-				{
-					print(pw, TAB);
-				}
-			}
-			else
-			{
-				if (token.getType() == Token.TYPE_KV_SEPARATOR)
-				{
-					print(pw, " " + token.getValue() + " ");
+					pw.print(String.format("%" + lineNoWidth + "d.", lineNo));
 				}
 				else
 				{
-					print(pw, token.getValue());
+					pw.print(lineNo + ".");
 				}
 			}
 			
-			if (token.hasExceptions())
+			// 行内打印出错
+			if (withErrorInline && !line.getExceptions().isEmpty())
 			{
-				lineHasError.add(lineNo);
+				pw.print("=>");
+			}
+			else if (withLineNo || (withErrorInline && !exceptions.isEmpty()))
+			{
+				pw.print("  ");
 			}
 			
-			if (exs != null && token.hasExceptions())
+			// 打印前导空格
+			for (int i = 0; i < line.getTabCount(); i++)
 			{
-				for (SyntaxException e : token.getExceptions())
+				pw.print(TAB);
+			}
+			
+			// 打印内容
+			for (Token token : line.getTokens())
+			{
+				final String s = token.getValue();
+				if (token.getType() == Token.TYPE_KV_SEPARATOR)
 				{
-					exs.add(e);
+					pw.print(" " + s + " ");
+				}
+				else
+				{
+					pw.print(s);
 				}
 			}
-		}
-	}
-	
-	private void newLine(PrintWriter pw)
-	{
-		if (lineNo > 0)
-		{
-			println(pw, "");
+			
+			pw.println();
 		}
 		
-		++lineNo;
-		
-		if (withLineNo)
+		// 打印完整错误信息
+		if (withErrorDetail && !exceptions.isEmpty())
 		{
-			if (lineNoWidth > 0)
+			pw.println();
+			pw.println("==== syntax warnings & errors ====");
+			for (SyntaxException e : exceptions)
 			{
-				print(pw, String.format("%" + lineNoWidth + "d.", lineNo));
-			}
-			else
-			{
-				print(pw, lineNo + ".");
+				pw.println(e.toString());
 			}
 		}
-		
-		if (withErrorInline && lineHasError.contains(lineNo))
-		{
-			print(pw, "=>");
-		}
-		else if (withLineNo || (withErrorInline && !lineHasError.isEmpty()))
-		{
-			print(pw, "  ");
-		}
 	}
-	
-	private void print(PrintWriter pw, String msg)
+
+	private int getLineNoWidth(int totalLineNo)
 	{
-		if (pw != null)
+		int ret = 0;
+		for (; totalLineNo > 0; totalLineNo /= 10)
 		{
-			pw.print(msg);
+			ret++;
 		}
+		return ret;
 	}
-	
-	private void println(PrintWriter pw, String msg)
-	{
-		if (pw != null)
-		{
-			pw.println(msg);
-		}
-	}
+
 }

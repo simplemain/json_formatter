@@ -13,7 +13,7 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		final String json = "{'number':123, \"hello\":\"\\u1343\", \"aa\": {'a':'b'}, 'array':['asdf', 123, null, true, false, 0.00003e-17, {'ddd':123,'hahah':[{}]},true]}";
+		final String json = "{'number':123, \"hello\":\"\\ux343\\u0041bCd\\uD83D\\uDE03\\r\\b\\f\\p\", \"111\":22,\"aa\": {'a':'b'}, 'array':['asdf', 123, null, true, false, 0.00003e-17, {'ddd':123,'hahah':[{}]},true]}aa";
 		
 		System.out.println("==== origin json string ====");
 		System.out.println(json);
@@ -25,6 +25,7 @@ public class Main
 		System.out.println("==== formatted json string ====");
 		try (PrintWriter pw = new PrintWriter(System.out))
 		{
+//			new TextJsonFormatter(true, true, true).format(je, pw);
 			new TextJsonFormatter(true, true, true).format(je, pw);
 		}
 	}
