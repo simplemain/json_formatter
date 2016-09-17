@@ -4,7 +4,7 @@
 这个解析的状态机严格按照JSON规范来编写，详细见: [http://www.json.org/](http://www.json.org/)
 
 ## 地址
-*(SimpleMain.com)[http://simplemain.com/kit/json/]
+[SimpleMain.com](http://simplemain.com/kit/json/)
 
 ## 代码组织
 
