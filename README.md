@@ -8,7 +8,7 @@
 ### Java代码: 在项目的/java目录下, 包名com.simplemain.kit.json
 * element: 存放的是Json的实体对象
 * error: 错误相关的类，分为错误和警告
-* format: 做格式化的类，都从JsonFormatter集成。可以自己继承实现想要的效果
+* format: 做格式化的类，都从JsonFormatter继承。可以自己继承实现想要的效果
 * parser: 解析类。对外接口为JsonParser类。
 * Main.java: 入口main函数类
 

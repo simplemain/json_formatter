@@ -25,8 +25,8 @@ public class Main
 		System.out.println("==== formatted json string ====");
 		try (PrintWriter pw = new PrintWriter(System.out))
 		{
-//			new TextJsonFormatter(true, true, true).format(je, pw);
 			new TextJsonFormatter(true, true, true).format(je, pw);
 		}
 	}
 }
+
